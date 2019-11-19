@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/19 17:19:11 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/11/19 18:23:56 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 	return (a);
 }
 
-int		ft_newline(char *line, char *bowl)
+int		ft_newline(char **line, char *bowl)
 {
 	int		i;
 	size_t	j;
 
 	i = 0;
 	j = BUFFER_SIZE;
-	free(line);
-	if (!(line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
+	//free(line);
+	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
 	while (bowl[i] == '\n')
 		i++;
 	while (bowl[i])
 	{
-		line[i] = bowl[i];
-		line[++i] = 0;
+		(*line)[i] = bowl[i];
+		(*line)[++i] = 0;
 		j--;
 		if (bowl[i] == '\n')
 		{
@@ -85,7 +85,11 @@ int		get_next_line(int fd, char **line)
 			if (!(bowl = ft_realloc(bowl)))
 				return (-1);
 		}
-		return (ft_newline(line[0], bowl));
+		int a;
+		a = ft_newline(line, bowl);
+		//line[1][0] = 0;
+		//printf("%s\n", *line);
+		return (a);
 	}
 	return (-1);
 }
