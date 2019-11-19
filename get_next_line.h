@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:20:59 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/17 15:02:59 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/11/19 17:19:49 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <stdio.h>
-int					get_next_line(int fd, char **line);
-char				*ft_realloc(char *bowl);
-size_t				ft_strlen(const char *s);
-char				*ft_strdup(char *s);
+int		get_next_line(int fd, char **line);
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(char *s);
+char	*ft_realloc(char *bowl);
+char	*ft_scrapbowl(char *bowl);
 #endif

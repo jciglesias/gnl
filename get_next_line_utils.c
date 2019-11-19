@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:56:23 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/17 18:59:42 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/11/19 16:42:38 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char		*ft_strdup(char *s)
+char	*ft_strdup(char *s)
 {
 	int			i;
 	char		*dup;
@@ -33,32 +33,44 @@ char		*ft_strdup(char *s)
 	//printf("\nstrdup\n");
 	i = -1;
 	while (s[++i])
-		dup[i] = (char)s[i];
+		dup[i] = s[i];
 	dup[i] = 0;
 	return (dup);
 }
 
-char			*ft_realloc(char *bowl)
+char	*ft_realloc(char *bowl)
 {
-	char	*dup;
-	int		i;
+	char		*dup;
+	int			i;
 
 	i = -1;
-	if (!bowl)
-	{
-		if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-			return (NULL);
-		bowl[0] = 0;
-		return (bowl);
-	}
 	dup = ft_strdup(bowl);
-	//	printf("\nrealloc\n");
-	free(bowl);
+	//printf("\nrealloc\n");
+	if (bowl)
+		free(bowl);
 	if (!(bowl = (char *)malloc(sizeof(char) * (ft_strlen(dup) + BUFFER_SIZE + 1))))
 		return (NULL);
 	while (dup[++i])
 		bowl[i] = dup[i];
 	bowl[i] = 0;
-	free(dup);
+	if (dup)
+		free(dup);
 	return (bowl);
+}
+
+char	*ft_scrapbowl(char *bowl)
+{
+	char		*dup;
+	int			i;
+
+	i = 0;
+	while (bowl[i] && bowl[i] != '\n')
+		i++;
+	while (bowl[i] && bowl[i] == '\n')
+		i++;
+	dup = ft_strdup(&bowl[i]);
+	//printf("scrap");
+	if (bowl)
+		free(bowl);
+	return (dup);
 }

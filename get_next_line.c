@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/17 19:06:09 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/11/19 17:19:11 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,56 +19,46 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 	int			a;
 
 	i = 0;
-	j = ft_strlen(bowl);
+	j = BUFFER_SIZE;
 	a = 1;
-	//	printf("\ncutline\n");
 	while (spoon[i])
 	{
-		bowl[j++] = spoon[i];
-		if (spoon[i++] == '\n')
+		bowl[i] = spoon[i];
+		if (spoon[i] == '\n' || (!spoon[i + 1] && j))
 			a = 0;
+		i++;
+		j--;
 	}
-	bowl[j] = 0;
+	bowl[i] = 0;
 	return (a);
 }
 
-char	*ft_scrapbowl(char *bowl)
+int		ft_newline(char *line, char *bowl)
 {
-	char	*dup;
 	int		i;
+	size_t	j;
 
 	i = 0;
-	while (bowl[i] && bowl[i] != '\n')
-		i++;
-	while (bowl[i] && bowl[i] == '\n')
-		i++;
-	dup = ft_strdup(&bowl[i]);
-	free(bowl);
-	return (dup);
-}
-
-int		ft_cpyline(char *line, char *bowl)
-{
-	int i;
-
-	i = 0;
-	if (!bowl)
-		return (0);
+	j = BUFFER_SIZE;
+	free(line);
 	if (!(line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
+	while (bowl[i] == '\n')
+		i++;
 	while (bowl[i])
 	{
 		line[i] = bowl[i];
-		if (bowl[++i] == '\n')
+		line[++i] = 0;
+		j--;
+		if (bowl[i] == '\n')
 		{
-			bowl = ft_scrapbowl(bowl);
-			line[i] = 0;
+			ft_scrapbowl(bowl);
 			return (1);
 		}
-		if (!bowl[i])
+		if (!bowl[i] && j)
 		{
-			free(bowl);
-			line[i] = 0;
+			if (bowl)
+				free(bowl);
 			return (0);
 		}
 	}
@@ -79,22 +69,23 @@ int		get_next_line(int fd, char **line)
 {
 	char			spoon[BUFFER_SIZE + 1];
 	static char		*bowl;
-	int				i;
 	int				j;
 
-	i = 0;
-	if (fd >= 0)
+	if (fd >= 0 && line)
 	{
-		while ((j = read(fd, &spoon, BUFFER_SIZE)) > 0)
+		//line[1][0] = 0;
+		if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+			return (-1);
+		bowl[0] = 0;
+		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
+			if (!(ft_fillbowl(spoon, bowl)))
+				break ;
 			if (!(bowl = ft_realloc(bowl)))
 				return (-1);
-			if (ft_fillbowl(spoon, bowl) == 0)
-				return (ft_cpyline(*line, bowl));
 		}
-		//printf("\nhola\n");
-		return (ft_cpyline(*line, bowl));
+		return (ft_newline(line[0], bowl));
 	}
 	return (-1);
 }
