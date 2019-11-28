@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/19 18:23:56 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/11/28 12:25:58 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,26 @@ int		ft_newline(char **line, char *bowl)
 
 	i = 0;
 	j = BUFFER_SIZE;
-	//free(line);
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
-	while (bowl[i] == '\n')
-		i++;
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
 		j--;
-		if (bowl[i] == '\n')
-		{
-			ft_scrapbowl(bowl);
-			return (1);
-		}
 		if (!bowl[i] && j)
 		{
 			if (bowl)
 				free(bowl);
 			return (0);
 		}
+		if (bowl[i - 1] == '\n')
+		{
+			ft_scrapbowl(bowl);
+			return (1);
+		}
 	}
-	return (0);
+	return (1);
 }
 
 int		get_next_line(int fd, char **line)
@@ -73,7 +70,6 @@ int		get_next_line(int fd, char **line)
 
 	if (fd >= 0 && line)
 	{
-		//line[1][0] = 0;
 		if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 			return (-1);
 		bowl[0] = 0;
@@ -87,7 +83,6 @@ int		get_next_line(int fd, char **line)
 		}
 		int a;
 		a = ft_newline(line, bowl);
-		//line[1][0] = 0;
 		//printf("%s\n", *line);
 		return (a);
 	}
