@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/11/28 12:25:58 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/12/03 17:55:00 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,29 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 int		ft_newline(char **line, char *bowl)
 {
 	int		i;
-	size_t	j;
 
 	i = 0;
-	j = BUFFER_SIZE;
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
-		j--;
-		if (!bowl[i] && j)
+		if (!bowl[i])
 		{
+		printf("newline\n");
 			if (bowl)
 				free(bowl);
 			return (0);
 		}
 		if (bowl[i - 1] == '\n')
 		{
-			ft_scrapbowl(bowl);
+		printf("newline\n");
+			//(bowl) = ft_scrapbowl(bowl);
 			return (1);
 		}
 	}
-	return (1);
+	return (0);
 }
 
 int		get_next_line(int fd, char **line)
@@ -70,9 +69,12 @@ int		get_next_line(int fd, char **line)
 
 	if (fd >= 0 && line)
 	{
-		if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-			return (-1);
-		bowl[0] = 0;
+		if (!bowl)
+		{
+			if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+				return (-1);
+			bowl[0] = 0;
+		}
 		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
@@ -83,6 +85,8 @@ int		get_next_line(int fd, char **line)
 		}
 		int a;
 		a = ft_newline(line, bowl);
+		if (a == 1)
+			bowl = ft_scrapbowl(bowl);
 		//printf("%s\n", *line);
 		return (a);
 	}
