@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/10 17:20:26 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/12/10 19:38:58 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ int		get_next_line(int fd, char **line)
 		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
-			if (!(ft_fillbowl(spoon, bowl)))
-				break ;
 			if (!(bowl = ft_realloc(bowl)))
 				return (-1);
+			if (!(ft_fillbowl(spoon, bowl)))
+				break ;
 		}
 		j = ft_newline(line, bowl);
 		if (j == 1)
