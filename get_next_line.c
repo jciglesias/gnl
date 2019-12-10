@@ -6,11 +6,21 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/03 17:55:00 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/12/10 17:20:26 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*ft_scrapbowl(char *bowl)
+{
+	char		*dup;
+
+	dup = ft_strdup(ft_strchr(bowl, '\n') + 1);
+	if (bowl)
+		free(bowl);
+	return (dup);
+}
 
 int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 {
@@ -40,23 +50,18 @@ int		ft_newline(char **line, char *bowl)
 	i = 0;
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
+	(*line)[0] = 0;
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
 		if (!bowl[i])
 		{
-		printf("newline\n");
-			if (bowl)
-				free(bowl);
+			free(bowl);
 			return (0);
 		}
 		if (bowl[i - 1] == '\n')
-		{
-		printf("newline\n");
-			//(bowl) = ft_scrapbowl(bowl);
 			return (1);
-		}
 	}
 	return (0);
 }
@@ -83,12 +88,10 @@ int		get_next_line(int fd, char **line)
 			if (!(bowl = ft_realloc(bowl)))
 				return (-1);
 		}
-		int a;
-		a = ft_newline(line, bowl);
-		if (a == 1)
+		j = ft_newline(line, bowl);
+		if (j == 1)
 			bowl = ft_scrapbowl(bowl);
-		//printf("%s\n", *line);
-		return (a);
+		return (j);
 	}
 	return (-1);
 }

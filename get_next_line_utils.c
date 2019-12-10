@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:56:23 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/03 16:52:39 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/12/10 17:07:53 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,4 @@ char	*ft_strchr(const char *s, int c)
 	if (a == '\0')
 		return ((char *)s + i);
 	return (NULL);
-}
-
-char	*ft_scrapbowl(char *bowl)
-{
-	char		*dup;
-
-	dup = ft_strdup(ft_strchr(bowl, '\n') + 1);
-	//printf("scrap");
-	if (bowl)
-		free(bowl);
-	return (dup);
 }
