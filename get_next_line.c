@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/10 19:38:58 by jiglesia         ###   ########.fr       */
+/*   Updated: 2019/12/22 18:58:53 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,23 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 	int			a;
 
 	i = 0;
-	j = BUFFER_SIZE;
+	j = ft_strlen(bowl);
+	printf("\n---%ld---\n", j);
 	a = 1;
 	while (spoon[i])
 	{
-		bowl[i] = spoon[i];
-		if (spoon[i] == '\n' || (!spoon[i + 1] && j))
+		bowl[j + i] = spoon[i];
+		if (spoon[i] == '\n')
 			a = 0;
 		i++;
-		j--;
 	}
-	bowl[i] = 0;
+	bowl[j + i] = 0;
 	return (a);
 }
 
-int		ft_newline(char **line, char *bowl)
+int		ft_newline(char **line, char *bowl, size_t j)
 {
-	int		i;
+	size_t	i;
 
 	i = 0;
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
@@ -55,7 +55,7 @@ int		ft_newline(char **line, char *bowl)
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
-		if (!bowl[i])
+		if (!bowl[i] && j == 0)
 		{
 			free(bowl);
 			return (0);
@@ -63,6 +63,7 @@ int		ft_newline(char **line, char *bowl)
 		if (bowl[i - 1] == '\n')
 			return (1);
 	}
+	free(bowl);
 	return (0);
 }
 
@@ -70,16 +71,18 @@ int		get_next_line(int fd, char **line)
 {
 	char			spoon[BUFFER_SIZE + 1];
 	static char		*bowl;
-	int				j;
+	size_t			j;
+	int				a;
 
 	if (fd >= 0 && line)
 	{
 		if (!bowl)
 		{
-			if (!(bowl = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+			if (!(bowl = (char *)malloc(sizeof(char))))
 				return (-1);
 			bowl[0] = 0;
 		}
+		//printf("++%s++", bowl);
 		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
@@ -88,10 +91,9 @@ int		get_next_line(int fd, char **line)
 			if (!(ft_fillbowl(spoon, bowl)))
 				break ;
 		}
-		j = ft_newline(line, bowl);
-		if (j == 1)
+		if ((a = ft_newline(line, bowl, j)) == 1)
 			bowl = ft_scrapbowl(bowl);
-		return (j);
+		return (a);
 	}
 	return (-1);
 }
