@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:56:23 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/22 18:13:56 by jiglesia         ###   ########.fr       */
+/*   Updated: 2020/01/09 15:44:41 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*ft_strdup(char *s)
 
 	if (!(dup = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1))))
 		return (NULL);
-	//printf("\nstrdup\n");
 	i = -1;
 	while (s[++i])
 		dup[i] = s[i];
@@ -44,8 +43,8 @@ char	*ft_realloc(char *bowl)
 
 	i = -1;
 	dup = ft_strdup(bowl);
-	//printf("\n+++%s+++\n", bowl);
-	free(bowl);
+	if (bowl)
+		free(bowl);
 	if (!(bowl = (char *)malloc(sizeof(char) * (ft_strlen(dup) + BUFFER_SIZE + 1))))
 		return (NULL);
 	while (dup[++i])

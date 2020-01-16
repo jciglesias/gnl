@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2019/12/22 18:58:53 by jiglesia         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:46:41 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 
 	i = 0;
 	j = ft_strlen(bowl);
-	printf("\n---%ld---\n", j);
+	//printf("\n---%ld---\n", j);
 	a = 1;
 	while (spoon[i])
 	{
@@ -51,19 +51,19 @@ int		ft_newline(char **line, char *bowl, size_t j)
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
 	(*line)[0] = 0;
+	printf("\nbowl=%p\nline=%p\n", bowl,*line);
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
 		if (!bowl[i] && j == 0)
 		{
-			free(bowl);
+			//free(bowl);
 			return (0);
 		}
 		if (bowl[i - 1] == '\n')
 			return (1);
 	}
-	free(bowl);
 	return (0);
 }
 
@@ -82,7 +82,6 @@ int		get_next_line(int fd, char **line)
 				return (-1);
 			bowl[0] = 0;
 		}
-		//printf("++%s++", bowl);
 		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
