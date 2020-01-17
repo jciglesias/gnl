@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:56:23 by jiglesia          #+#    #+#             */
-/*   Updated: 2020/01/09 15:44:41 by jiglesia         ###   ########.fr       */
+/*   Updated: 2020/01/17 17:57:26 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ char	*ft_realloc(char *bowl)
 	dup = ft_strdup(bowl);
 	if (bowl)
 		free(bowl);
-	if (!(bowl = (char *)malloc(sizeof(char) * (ft_strlen(dup) + BUFFER_SIZE + 1))))
+	if (!(bowl = (char *)malloc(sizeof(char) *
+								(ft_strlen(dup) + BUFFER_SIZE + 1))))
 		return (NULL);
 	while (dup[++i])
 		bowl[i] = dup[i];
@@ -57,8 +58,8 @@ char	*ft_realloc(char *bowl)
 
 char	*ft_strchr(const char *s, int c)
 {
-	int i;
-	char a;
+	int			i;
+	char		a;
 
 	i = 0;
 	a = (char)c;

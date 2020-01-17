@@ -6,13 +6,13 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2020/01/17 00:46:24 by jiglesia         ###   ########.fr       */
+/*   Updated: 2020/01/17 17:59:00 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_scrapbowl(char *bowl)
+static char		*ft_scrapbowl(char *bowl)
 {
 	char		*dup;
 
@@ -22,13 +22,13 @@ static char	*ft_scrapbowl(char *bowl)
 	return (dup);
 }
 
-void	*ft_finalfree(char *bowl)
+void			*ft_finalfree(char *bowl)
 {
 	free(bowl);
 	return (NULL);
 }
 
-int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
+int				ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 {
 	size_t		i;
 	size_t		j;
@@ -36,7 +36,6 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 
 	i = 0;
 	j = ft_strlen(bowl);
-	//printf("\n---%ld---\n", j);
 	a = 1;
 	while (spoon[i])
 	{
@@ -49,7 +48,7 @@ int		ft_fillbowl(char spoon[BUFFER_SIZE + 1], char *bowl)
 	return (a);
 }
 
-int		ft_newline(char **line, char *bowl, size_t j)
+int				ft_newline(char **line, char *bowl, size_t j)
 {
 	size_t	i;
 
@@ -57,14 +56,13 @@ int		ft_newline(char **line, char *bowl, size_t j)
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
 	(*line)[0] = 0;
-	printf("\nbowl=%p\nline=%p\n", bowl,*line);
+	printf("\nbowl=%p\nline=%p\n", bowl, *line);
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
 		if (!bowl[i] && j == 0)
 		{
-			//free(bowl);
 			return (0);
 		}
 		if (bowl[i - 1] == '\n')
@@ -73,7 +71,7 @@ int		ft_newline(char **line, char *bowl, size_t j)
 	return (0);
 }
 
-int		get_next_line(int fd, char **line)
+int				get_next_line(int fd, char **line)
 {
 	char			spoon[BUFFER_SIZE + 1];
 	static char		*bowl;
