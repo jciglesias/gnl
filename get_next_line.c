@@ -6,7 +6,7 @@
 /*   By: jiglesia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 13:43:51 by jiglesia          #+#    #+#             */
-/*   Updated: 2020/01/17 18:38:42 by jiglesia         ###   ########.fr       */
+/*   Updated: 2020/01/18 23:57:04 by jiglesia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static char		*ft_scrapbowl(char *bowl)
 
 void			*ft_finalfree(char *bowl)
 {
-	free(bowl);
+	if (bowl)
+		free(bowl);
 	return (NULL);
 }
 
@@ -55,17 +56,18 @@ int				ft_newline(char **line, char *bowl, size_t j)
 	i = 0;
 	if (!(*line = (char *)malloc(sizeof(char) * (ft_strlen(bowl) + 1))))
 		return (-1);
-	(*line)[0] = 0;
+	(*line)[i] = 0;
 	while (bowl[i])
 	{
 		(*line)[i] = bowl[i];
 		(*line)[++i] = 0;
-		if (!bowl[i] && j == 0)
-		{
-			return (0);
-		}
 		if (bowl[i - 1] == '\n')
+		{
+			(*line)[i - 1] = 0;
 			return (1);
+		}
+		if (!bowl[i] && j == 0)
+			return (0);
 	}
 	return (0);
 }
@@ -77,20 +79,16 @@ int				get_next_line(int fd, char **line)
 	size_t			j;
 	int				a;
 
-	if (fd >= 0 && line)
+	if (fd >= 0 && line && !(read(fd, spoon, 0)))
 	{
 		if (!bowl)
-		{
-			if (!(bowl = (char *)malloc(sizeof(char))))
-				return (-1);
-			bowl[0] = 0;
-		}
+			bowl = ft_strdup("");
 		while ((j = read(fd, spoon, BUFFER_SIZE)) > 0)
 		{
 			spoon[j] = 0;
 			if (!(bowl = ft_realloc(bowl)))
 				return (-1);
-			if (!(ft_fillbowl(spoon, bowl)))
+			if(!(ft_fillbowl(spoon, bowl)))
 				break ;
 		}
 		if ((a = ft_newline(line, bowl, j)) == 1)
@@ -99,5 +97,6 @@ int				get_next_line(int fd, char **line)
 			bowl = ft_finalfree(bowl);
 		return (a);
 	}
+	line = NULL;
 	return (-1);
 }
